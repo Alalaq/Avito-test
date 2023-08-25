@@ -1,0 +1,203 @@
+info:
+  contact: {}
+paths:
+  /segments/create:
+    post:
+      consumes:
+      - application/json
+      description: Create a new segment with auto-add option and return success message.
+      parameters:
+      - description: Slug of the segment
+        in: body
+        name: slug
+        required: true
+        schema:
+          type: string
+      - description: Auto Add flag
+        in: body
+        name: auto_add
+        required: true
+        schema:
+          type: boolean
+      - description: Auto Percentage
+        in: body
+        name: auto_pct
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      tags:
+      - segments
+  /segments/delete:
+    delete:
+      description: Delete a segment by slug and return success message.
+      parameters:
+      - description: Slug of the segment
+        in: query
+        name: slug
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response message
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      tags:
+      - segments
+  /segments/history-report:
+    get:
+      description: Generate a CSV report of segment history for a specified year and
+        month.
+      parameters:
+      - description: Year
+        in: query
+        name: year
+        required: true
+        type: integer
+      - description: Month
+        in: query
+        name: month
+        required: true
+        type: integer
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: CSV report
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      tags:
+      - segments
+  /segments/user-segments:
+    get:
+      description: Get a list of segments linked to a user by providing the user ID.
+      parameters:
+      - description: User ID
+        in: query
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Segments
+          schema:
+            additionalProperties:
+              items:
+                type: string
+              type: array
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      tags:
+      - segments
+  /users/create:
+    post:
+      description: Create a new user and return the user ID.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User ID
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      tags:
+      - users
+  /users/update-segments:
+    post:
+      consumes:
+      - application/json
+      description: Update user segments by adding or removing specified segments.
+      parameters:
+      - description: User ID
+        in: body
+        name: user_id
+        required: true
+        schema:
+          type: integer
+      - description: Segments to add
+        in: body
+        name: segments_to_add
+        required: true
+        schema:
+          type: array
+      - description: Segments to remove
+        in: body
+        name: segments_to_remove
+        required: true
+        schema:
+          type: array
+      - description: Expiration date
+        in: body
+        name: expires_at
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response message
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      tags:
+      - users
+swagger: "2.0"
